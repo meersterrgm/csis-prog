@@ -1,131 +1,120 @@
-﻿/* 
-RATHEBE MOFOKENG
-2017015898
-PRACTICAL 8
-02 MAY 2024
-*/
-
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace BMWBuilder
+namespace ReDoBMW
 {
     class Program
     {
         static void Main(string[] args)
         {
-            int iOption = 0;
-            do
-            {
-                Console.Clear();
 
-                string sQuery = "";
-                DisplayTypes();
+            Console.Clear();
+            Console.WriteLine("----------------------------------------");
+            Console.WriteLine("Welcome to the BMW Car Customization App");
+            Console.WriteLine("----------------------------------------");
+            Console.WriteLine();
+            string sDetails = " ";
+            PersonalDetails(ref sDetails);
+            string sDisplay = " ";
+            DisplayScreen(ref sDisplay);
 
-                Console.Write("Select a starting type: ");
 
-                if (CheckValidInput(out iOption) && iOption != -1)
+            int iType = 0;
+            string sQuery = " ";
+
+            
+            
+                TypeSelection(ref iType);
+
+                switch (iType)
                 {
-                    switch (iOption)
-                    {
-                        case 1:
-                            BuildCustomOrder("Sedan", ref sQuery);
-                            DisplayBuild(ref sQuery);
-                            break;
-                        case 2:
-                            BuildCustomOrder("SUV", ref sQuery);
-                            DisplayBuild(ref sQuery);
-                            break;
-                        case 3:
-                            BuildCustomOrder("Truck", ref sQuery);
-                            DisplayBuild(ref sQuery);
-                            break;
-                        default:
-                            Console.WriteLine("\nThat is not a valid option,press any key to try again...");
-                            Console.ReadKey();
-                            break;
-                    }
+                    case 1: //Truck
+                        BuildString("Truck", ref sQuery);
+                        DisplayBuild(ref sQuery,ref sDetails);
+                        break;
+                    case 2: //Sedan
+                        BuildString("Sedan", ref sQuery);
+                        DisplayBuild(ref sQuery,ref sDetails);
 
+                        break;
+                    case 3: //SUV
+                        BuildString("SUV", ref sQuery);
+                        DisplayBuild(ref sQuery,ref sDetails);
+                        break;
+
+                    default: //default
+                        Console.WriteLine("Invalid model, please choose from the menu");
+                        break;
                 }
 
-            } while (iOption != -1);
-            Console.WriteLine("\nPress any key to exit...");
-            Console.ReadKey();
-        }//Main End
-
-        //1. CheckValidInput method
-
-        public static bool CheckValidInput(out int _option)
-        {
-            //if the iput is an integer bool is true
-            return int.TryParse(Console.ReadLine(), out _option);
+            //Console.WriteLine("App closed, thank you for using. Press any key to exit");
+            //Console.ReadKey();
         }
-
-
-        //2. GetColour method
-        public static string GetColour()
+        public static void BuildString(string iType, ref string sQuery)
         {
-            Console.Write("What colour should your BMW be? ");
-            string _colour = Console.ReadLine();
-
-            return _colour;
-        }
-
-
-        //3. AddLeatherSeats method
-        public static void AddLeatherSeats(ref string _sQuery)
-        {
-            Console.Write("Would you like to add leather seats to your BMW? (Y/N): ");
-            if (Console.ReadLine().ToUpper() == "Y")
-            {
-                _sQuery = " with added leather seats.";
-            }
-            else
-            {
-                _sQuery = " without added leather seats.";
-            }
-        }//AddLeatherSeats end
-
-
-        //4. BuildCustomOrder
-        public static void BuildCustomOrder(string type,ref string _sQuery)
-        {
-            //
-            string sColour = GetColour();
-
-            //declearing a string Leather variable 
-            string sLeather = ""; 
-            //calling the AddLeatherSeats method to the variable
+            string sColour = " ";
+            Console.Write("What colour would you like: ");
+            ColourSelection(ref sColour);
+            string sLeather = " ";
             AddLeatherSeats(ref sLeather);
-
-            //built string with colour, customer option & leather seat choice
-            _sQuery = "You have selected a " + sColour + " BMW " + type + " " + sLeather;
-
+           sQuery = "You have selected a " + sColour + " BMW " + iType + sLeather;
         }
 
-
-        //5. DisplayBuild
-        public static void DisplayBuild(ref string _sQuery)
+        public static string ColourSelection(ref string sColour)
         {
-            //calling the built string
-            Console.WriteLine(_sQuery);
 
-;           Console.WriteLine("\n---------------------------THANK YOU-----------------------------");
+            return sColour = Console.ReadLine();
+        }
+
+        public static void DisplayScreen(ref string sDisplay)
+        {
+            Console.WriteLine("\nPlease choose the type of BWM you want to order \n1. Truck \n2. Sedan \n3. SUV \n-1. To cancel the program \n");
+       
+        }
+
+        public static void DisplayBuild(ref string sQuery, ref string sDetails)
+        {
+            Console.Write(sDetails);
+            Console.Write(". " + sQuery);
+
+            Console.WriteLine("\n---------------------------THANK YOU-----------------------------");
             Console.WriteLine("We will contact you soon to discuss the price and payment options.\nPress any key to continue....");
             Console.ReadKey();
-        }//DisplayBuild end
+        }
 
-        //DisplayTypes
-        public static void DisplayTypes()
+        public static void AddLeatherSeats(ref string sQuery)
         {
-            Console.WriteLine("----------------------Welcome to the BMW Dealership!----------------------");
-            Console.WriteLine("Please provide us with some details regarding the BMW you're interested in.\n");
-            Console.WriteLine("----------------------------------TYPES-----------------------------------");
-            Console.WriteLine("1) Sedan");
-            Console.WriteLine("2) SUV");
-            Console.WriteLine("3) Truck");
-            Console.WriteLine("-1) Cancel build and close system\n");
-        }//DisplayTypes end
+            
+            Console.Write("Would you like leather seats in your BMW? (Y/N) ");
+            string sSelection  = Console.ReadLine();
+            if (sSelection == "Y")
+            {
+                sQuery = " with leather seats";
+            }
+            else
+                sQuery = " without leather seats";
+        }
 
-    }//Class end
+        public static bool TypeSelection(ref int _iType)
+        {
+            return int.TryParse(Console.ReadLine(), out _iType);
+        }
 
-}//Namespace end
+        public static void PersonalDetails(ref string sDetails)
+        {
+            Console.WriteLine("Please provide us with your personal details.");
+            Console.Write("Name: ");
+            string sName = Console.ReadLine();
+            Console.Write("Surname: ");
+            string sSurname = Console.ReadLine();
+            Console.Write("HomeTown: ");
+            string sHomeTown = Console.ReadLine();
+
+            sDetails = "\nThank you " + sName + " " + sSurname + " from "+ sHomeTown;
+        }
+    }
+
+}
